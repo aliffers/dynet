@@ -1,0 +1,39 @@
+Philips Dynalite DyNet I/O library
+----------------------------------
+
+This library will use a MAX485 IC together with the SoftwareSerial library
+to send and receive Dynalite OpCodes directly onto the DyNet RS485 bus.
+
+The library requires an Aurdino with with a correctly wired MAX485 IC,
+using all 4 connections (RO, RE, DE, DI).  The DyNet bus uses 9600 baud,
+8 data bits, 1 start bit, 1 stop bit and no parity and it is strictly
+half duplex.  The functions in this library ensure half duplex by using
+the RE/DE pins.
+
+This libarary will also calculate the 8th checksum byte of OpCodes to be
+sent.  Any value in the opcode at this position is ignored and overwritten.
+Similarly, incoming data will be checked and not handed back to the calling
+function if the checksum value is wrong.
+
+
+Initialisation
+--------------
+To use the library, simply create an instance of the DyNet object, and then
+call the begin function indicating which pins are allocated to each of the
+relevant pins on the MAX485.
+
+This library is built to be small and fast, and not double and triple check
+that everything has been set up correctly.  If you do NOT call begin, there's
+nothing stopping you from calling the other functions anyway and all kinds
+of unexpected things may happen.  It's a microcontroller.
+
+Functions
+---------
+sendOpCode: Expects an 8 byte array that is the OpCode.  It is simply fired
+onto the serial bus after calculating the OpCode checksum.
+
+receiveOpCode: This will check the wire for awaiting incoming data that might
+be waiting in the buffer.  It'll fetch a complete OpCode provided all bytes
+are no more than 1ms apart (as per DyNet spec) and if the checksum works out,
+it'll call the supplied function with the opcode.  For me this is the process
+function from the DDMC810 object.
