@@ -9,8 +9,8 @@ class DyNet {
   public:
 		DyNet ();
 		~DyNet ();
-		int _rePin, _dePin;
-		void begin (int roPin, int rePin, int dePin, int diPin);
+		int _redePin;
+		void begin (int roPin, int diPin, int redePin);
 		void receiveOpCode (void (*)(byte*));
 		void sendOpCode (byte*);
 		

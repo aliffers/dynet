@@ -9,27 +9,23 @@ DyNet::~DyNet () {
 	if (_rs485 != NULL) delete _rs485;
 }
 
-void DyNet::begin (int roPin, int rePin, int dePin, int diPin) {
-	_rePin = rePin;
-	_dePin = dePin;
+void DyNet::begin (int roPin, int diPin, int redePin) {
+	_redePin = redePin;
 	pinMode (roPin, INPUT);
-	pinMode (rePin, OUTPUT);
-	pinMode (dePin, OUTPUT);
 	pinMode (diPin, OUTPUT);
+	pinMode (redePin, OUTPUT);
 	_rs485 = new SoftwareSerial (roPin, diPin);
 	_rs485->begin (9600);
 	rxMode ();
 }
 
 void DyNet::rxMode () {
-	digitalWrite (_dePin, LOW);
-	digitalWrite (_rePin, LOW);
+	digitalWrite (_redePin, LOW);
 	_rs485->listen();
 }
 
 void DyNet::txMode () {
-	digitalWrite (_rePin, HIGH);
-	digitalWrite (_dePin, HIGH);
+	digitalWrite (_redePin, HIGH);
 }
 
 void DyNet::receiveOpCode (void (*fn)(byte*)) {
